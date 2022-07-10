@@ -1,12 +1,17 @@
 import bpy
 import os
+import re
 import sys
 import glob
 from importlib import machinery
 
 
 def get_no_from_path(path):
-    return int(os.path.basename(path).replace("slide", "").replace(".jpg", ""))
+    if result := re.match(r'[^\d]*(\d+)[^\d]*', os.path.basename(path)):
+        no = result.group(1)
+        return int(no)
+    else:
+        raise Exception(f'Detected filename without numbers: {path}')
 
 
 def get_data(slide_dir, audio_dir):
@@ -20,7 +25,7 @@ def get_data(slide_dir, audio_dir):
         slide_dic[no] = f
 
     for f in sorted(glob.glob(audio_pattern)):
-        no = int(os.path.basename(f).split("_")[0])
+        no = get_no_from_path(f)
         audio_dic[no] = f
 
     # print(slide_dic, audio_dic)
