@@ -1,0 +1,12 @@
+{
+    "render": {
+        "resolution_x": 1920,
+        "resolution_y": 1080,
+        "resolution_percentage": 50,
+        "frame_rate": 30
+    },
+    "image": {
+        "default_num_of_frames": 30
+    },
+    "blender": "/Applications/Blender.app/Contents/MacOS/Blender"
+}
