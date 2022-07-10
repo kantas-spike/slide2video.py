@@ -8,5 +8,9 @@
     "image": {
         "default_num_of_frames": 30
     },
+    "extension": {
+        "image": "jpg",
+        "audio": "wav"
+    },
     "blender": "/Applications/Blender.app/Contents/MacOS/Blender"
 }

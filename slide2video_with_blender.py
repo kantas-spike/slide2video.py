@@ -14,9 +14,9 @@ def get_no_from_path(path):
         raise Exception(f"Detected filename without numbers: {path}")
 
 
-def get_data(slide_dir, audio_dir):
-    slide_pattern = os.path.join(slide_dir, "*.jpg")
-    audio_pattern = os.path.join(audio_dir, "*.wav")
+def get_data(slide_dir, audio_dir, config):
+    slide_pattern = os.path.join(slide_dir, "*.{}".format(config.get("image", "jpg")))
+    audio_pattern = os.path.join(audio_dir, "*.{}".format(config.get("audio", "wav")))
     slide_dic = {}
     audio_dic = {}
 
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     config = common.get_config()
 
-    data = get_data(sys.argv[-2], sys.argv[-1])
+    data = get_data(sys.argv[-2], sys.argv[-1], config["extension"])
     # print(data)
 
     bpy.context.preferences.view.show_splash = False
