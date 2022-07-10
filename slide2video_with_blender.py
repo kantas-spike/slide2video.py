@@ -7,11 +7,11 @@ from importlib import machinery
 
 
 def get_no_from_path(path):
-    if result := re.match(r'[^\d]*(\d+)[^\d]*', os.path.basename(path)):
+    if result := re.match(r"[^\d]*(\d+)[^\d]*", os.path.basename(path)):
         no = result.group(1)
         return int(no)
     else:
-        raise Exception(f'Detected filename without numbers: {path}')
+        raise Exception(f"Detected filename without numbers: {path}")
 
 
 def get_data(slide_dir, audio_dir):
@@ -63,7 +63,9 @@ def setup_render(config):
 
 
 def load_slide2video_module():
-    loader = machinery.SourceFileLoader('slide2video', os.path.join(os.path.dirname(__file__), "slide2video.py"))
+    loader = machinery.SourceFileLoader(
+        "slide2video", os.path.join(os.path.dirname(__file__), "slide2video.py")
+    )
     return loader.load_module()
 
 
