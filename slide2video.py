@@ -24,6 +24,14 @@ if __name__ == "__main__":
 
     config = get_config()
     script_path = os.path.join(os.path.dirname(__file__), "slide2video_with_blender.py")
-    cmd_line = [config["blender"], "-P", script_path, "--", sys.argv[1], sys.argv[2], sys.argv[3]]
+    cmd_line = [
+        config["blender"],
+        "-P",
+        script_path,
+        "--",
+        sys.argv[1],
+        sys.argv[2],
+        sys.argv[3],
+    ]
     print(cmd_line)
     subprocess.run(cmd_line)
