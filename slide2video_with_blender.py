@@ -39,12 +39,12 @@ def get_data(slide_dir, audio_dir, config):
     return data
 
 
-def setup_render(config):
+def setup_render(config, blend_file_dir):
     render = bpy.data.scenes["Scene"].render
 
     # 画面解像度
-    bpy.data.scenes["Scene"].render.resolution_x = config["resolution_x"]
-    bpy.data.scenes["Scene"].render.resolution_y = config["resolution_y"]
+    render.resolution_x = config["resolution_x"]
+    render.resolution_y = config["resolution_y"]
     render.resolution_percentage = config["resolution_percentage"]
 
     # Frame Rate
@@ -60,6 +60,9 @@ def setup_render(config):
 
     # Encoding Container を MPEG-4 に
     render.ffmpeg.format = "MPEG4"
+
+    # 動画出力ディレクトリを指定
+    render.filepath = blend_file_dir + "/"
 
 
 def load_slide2video_module():
@@ -98,7 +101,8 @@ if __name__ == "__main__":
     bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)
 
     # renderを設定
-    setup_render(config["render"])
+    blend_file_dir = os.path.dirname(blend_file_path)
+    setup_render(config["render"], blend_file_dir)
 
     se = bpy.context.scene.sequence_editor
     f_start = 1
@@ -106,7 +110,6 @@ if __name__ == "__main__":
     image_channel = 3
 
     default_num_of_frames = config["image"]["default_num_of_frames"]
-    blend_file_dir = os.path.dirname(blend_file_path)
 
     ml_frame, mr_frame = get_margin_x_frame(config)
     print(ml_frame, mr_frame)
