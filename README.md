@@ -24,6 +24,12 @@
 python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR
 ~~~
 
+もしくは、`slide2video.sh`をインストールしている場合は、以下を実行します。
+
+~~~sh
+~/bin/slide2video.shell SLIDE_DATA_DIR AUDIO_DATA_DIR
+~~~
+
 実行の結果、Blenderの`Video Editing`を起動し、
 スライド資料と音声データを対応づけて、ビデオシーケンサーのチャンネルに配置します。
 
@@ -68,3 +74,19 @@ python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR
 |extension|audio|音声データファイルの拡張子|wav|
 |blender|-|コマンドライン起動時に使用するBlenderコマンドのパス|/Applications/Blender.app/Contents/MacOS/Blender|
 
+## 呼び出し用シェルスクリプトのインストール
+
+`slide2video.py` を呼び出す場合、ディレクトリの移動や、スクリプトのパスを指定するなど、実行するまでの作業が煩雑なため、
+呼び出し用シェルスクリプトを用意しています。
+
+以下を実行してインストールしてください。デフォルトでは`~/bin`にインストールされます。
+
+~~~shell
+make install
+~~~
+
+インストール後は、以下で実行できるようになります。
+
+~~~sh
+~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR
+~~~
