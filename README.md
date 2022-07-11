@@ -21,13 +21,14 @@
 `SLIDE_DATA_DIR`と`AUDIO_DATA_DIR`は、それぞれ、`スライド資料`と`音声データ`を格納したディレクトリのパスです。
 
 ~~~sh
-python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR
+python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 ~~~
 
 もしくは、`slide2video.sh`をインストールしている場合は、以下を実行します。
+シェルの場合、第三引数`BLEND_FILE_PATH`を省略すると、`./slide2video.blend`が作成されます。
 
-~~~sh
-~/bin/slide2video.shell SLIDE_DATA_DIR AUDIO_DATA_DIR
+~~~shell
+~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 ~~~
 
 実行の結果、Blenderの`Video Editing`を起動し、
@@ -86,7 +87,8 @@ make install
 ~~~
 
 インストール後は、以下で実行できるようになります。
+(第三引数`BLEND_FILE_PATH`は省略可能。省略時は`./slide2video.blend`指定されます。)
 
 ~~~sh
-~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR
+~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 ~~~

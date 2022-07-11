@@ -71,20 +71,24 @@ def load_slide2video_module():
 
 if __name__ == "__main__":
     common = load_slide2video_module()
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 4:
         print("引数に、スライドデータと音声データのディレクトリを指定してください\n")
         common.usage()
         sys.exit(1)
 
     config = common.get_config()
 
-    data = get_data(sys.argv[-2], sys.argv[-1], config["extension"])
+    data = get_data(sys.argv[-3], sys.argv[-2], config["extension"])
     # print(data)
 
-    bpy.context.preferences.view.show_splash = False
-
     # New File VideoEditing
+    bpy.context.preferences.view.show_splash = False
     bpy.ops.wm.read_homefile(app_template="Video_Editing")
+
+    # save blend file
+    #   blender独自の相対パスでリソース保存する場合は事前にblendファイル保存が必要なため
+    blend_file_path = os.path.abspath(os.path.expanduser(sys.argv[-1]))
+    bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)
 
     # renderを設定
     setup_render(config["render"])
@@ -95,9 +99,13 @@ if __name__ == "__main__":
     image_channel = 3
 
     default_num_of_frames = config["image"]["default_num_of_frames"]
+    blend_file_dir = os.path.dirname(blend_file_path)
 
     for item in data.values():
         image, audio = item["slide"], item["audio"]
+        # Use special relative paths starting with '//' in Blender, it meaning relative from the Blender file.
+        image = bpy.path.relpath(image, start=blend_file_dir)
+        audio = bpy.path.relpath(audio, start=blend_file_dir)
         print(audio, image)
 
         if audio is not None:
@@ -116,3 +124,6 @@ if __name__ == "__main__":
         f_start = frame_end
 
     bpy.data.scenes["Scene"].frame_end = f_start
+
+    # save blend file
+    bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)

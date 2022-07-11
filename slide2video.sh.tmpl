@@ -2,14 +2,20 @@
 
 SCRIPT_HOME_DIR=@@@SCRIPT_HOME_DIR@@@
 
-if [ $# -ne 2 ]; then
-    echo "ERROR: Please specify two arguments."  1>&2
+if [ $# -lt 2 ]; then
+    echo "ERROR: Please specify two or three arguments."  1>&2
     echo ""  1>&2
-    echo "USAGE: ~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR" 1>&2
+    echo "USAGE: ~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR [BLEND_FILE_PATH]" 1>&2
     exit 1
+fi
+
+if [ $# -eq 2 ]; then
+    BLEND_FILE_PATH=./slide2video.blend
+else
+    BLEND_FILE_PATH=$3
 fi
 
 SLIDE_DATA_DIR=$1
 AUDIO_DATA_DIR=$2
 
-python3 ${SCRIPT_HOME_DIR}slide2video.py $SLIDE_DATA_DIR $AUDIO_DATA_DIR
+python3 ${SCRIPT_HOME_DIR}slide2video.py $SLIDE_DATA_DIR $AUDIO_DATA_DIR $BLEND_FILE_PATH
