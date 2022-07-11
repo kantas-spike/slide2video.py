@@ -104,6 +104,7 @@ if __name__ == "__main__":
             snd = se.sequences.new_sound(
                 os.path.basename(audio), audio, audio_channel, f_start
             )
+            snd.show_waveform = True
             frame_end = snd.frame_final_end
         else:
             frame_end = f_start + default_num_of_frames
