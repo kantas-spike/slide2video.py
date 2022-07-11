@@ -54,6 +54,10 @@ python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
     "image": {
         "default_num_of_frames": 30
     },
+    "audio": {
+        "margin_left_sec": 0.8,
+        "margin_right_sec": 1.0
+    },
     "extension": {
         "image": "jpg",
         "audio": "wav"
