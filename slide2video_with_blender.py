@@ -69,6 +69,13 @@ def load_slide2video_module():
     return loader.load_module()
 
 
+def get_margin_x_frame(config):
+    fps = config["render"]["frame_rate"]
+    ml = config["audio"]["margin_left_sec"]
+    mr = config["audio"]["margin_right_sec"]
+    return (int(ml * fps), int(mr * fps))
+
+
 if __name__ == "__main__":
     common = load_slide2video_module()
     if len(sys.argv) < 4:
@@ -101,6 +108,9 @@ if __name__ == "__main__":
     default_num_of_frames = config["image"]["default_num_of_frames"]
     blend_file_dir = os.path.dirname(blend_file_path)
 
+    ml_frame, mr_frame = get_margin_x_frame(config)
+    print(ml_frame, mr_frame)
+
     for item in data.values():
         image, audio = item["slide"], item["audio"]
         # Use special relative paths starting with '//' in Blender, it meaning relative from the Blender file.
@@ -110,12 +120,12 @@ if __name__ == "__main__":
 
         if audio is not None:
             snd = se.sequences.new_sound(
-                os.path.basename(audio), audio, audio_channel, f_start
+                os.path.basename(audio), audio, audio_channel, (f_start + ml_frame)
             )
             snd.show_waveform = True
-            frame_end = snd.frame_final_end
+            frame_end = snd.frame_final_end + mr_frame
         else:
-            frame_end = f_start + default_num_of_frames
+            frame_end = f_start + default_num_of_frames + ml_frame + mr_frame
 
         img = se.sequences.new_image(
             os.path.basename(image), image, image_channel, f_start, fit_method="FIT"

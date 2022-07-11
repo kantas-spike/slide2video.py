@@ -71,6 +71,8 @@ python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 |render|resolution_percentage|レンダリング解像度の割合(単位:%)|50|
 |render|frame_rate|レンダリング結果のフレームレート(単位:fps)|30|
 |image|default_num_of_frames|スライドに対応する音声ファイルがない場合のスライドの表示フレーム数|30|
+|audio|margin_left_sec|スライド表示してから音声ファイル再生までの待ち時間(単位:秒)|0.8|
+|audio|margin_right_sec|音声ファイル再生終了から次のスライド表示までの待ち時間(単位:秒)|1.0|
 |extension|image|スライド画像ファイルの拡張子|jpg|
 |extension|audio|音声データファイルの拡張子|wav|
 |blender|-|コマンドライン起動時に使用するBlenderコマンドのパス|/Applications/Blender.app/Contents/MacOS/Blender|
