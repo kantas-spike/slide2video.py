@@ -1,0 +1,15 @@
+#!/bin/sh
+
+SCRIPT_HOME_DIR=@@@SCRIPT_HOME_DIR@@@
+
+if [ $# -ne 2 ]; then
+    echo "ERROR: Please specify two arguments."  1>&2
+    echo ""  1>&2
+    echo "USAGE: ~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR" 1>&2
+    exit 1
+fi
+
+SLIDE_DATA_DIR=$1
+AUDIO_DATA_DIR=$2
+
+python3 ${SCRIPT_HOME_DIR}slide2video.py $SLIDE_DATA_DIR $AUDIO_DATA_DIR
