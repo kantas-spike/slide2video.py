@@ -98,10 +98,14 @@ if __name__ == "__main__":
     # save blend file
     #   blender独自の相対パスでリソース保存する場合は事前にblendファイル保存が必要なため
     blend_file_path = os.path.abspath(os.path.expanduser(sys.argv[-1]))
+    blend_file_dir = os.path.dirname(blend_file_path)
+
+    if not os.path.exists(blend_file_dir):
+        os.makedirs(blend_file_dir)
+
     bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)
 
     # renderを設定
-    blend_file_dir = os.path.dirname(blend_file_path)
     setup_render(config["render"], blend_file_dir)
 
     se = bpy.context.scene.sequence_editor
