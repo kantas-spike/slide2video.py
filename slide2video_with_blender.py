@@ -39,6 +39,18 @@ def get_data(slide_dir, audio_dir, config):
     return data
 
 
+def get_framerate_preset(frame_rate):
+    pattern = "/Applications/Blender.app/Contents/Resources/*/scripts/presets/framerate/{}.py".format(
+            frame_rate
+        )
+    paths = glob.glob(pattern)
+
+    if len(paths) == 0:
+        raise Exception(f"Cannot glob files with pattern: {pattern}")
+    else:
+        return paths[-1]
+
+
 def setup_render(config, blend_file_dir):
     render = bpy.data.scenes["Scene"].render
 
@@ -48,10 +60,9 @@ def setup_render(config, blend_file_dir):
     render.resolution_percentage = config["resolution_percentage"]
 
     # Frame Rate
+    preset_path = get_framerate_preset(config["frame_rate"])
     bpy.ops.script.execute_preset(
-        filepath="/Applications/Blender.app/Contents/Resources/3.2/scripts/presets/framerate/{}.py".format(
-            config["frame_rate"]
-        ),
+        filepath=preset_path,
         menu_idname="RENDER_MT_framerate_presets",
     )
 
