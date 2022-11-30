@@ -40,15 +40,12 @@ def get_data(slide_dir, audio_dir, config):
 
 
 def get_framerate_preset(frame_rate):
-    pattern = "/Applications/Blender.app/Contents/Resources/*/scripts/presets/framerate/{}.py".format(
-            frame_rate
-        )
-    paths = glob.glob(pattern)
+    paths = bpy.utils.preset_paths("framerate")
 
     if len(paths) == 0:
-        raise Exception(f"Cannot glob files with pattern: {pattern}")
+        raise Exception("Cannot find framerate preset paths")
     else:
-        return paths[-1]
+        return bpy.utils.preset_find(str(frame_rate), paths[-1])
 
 
 def setup_render(config, blend_file_dir):
