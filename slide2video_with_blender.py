@@ -1,3 +1,4 @@
+import argparse
 import bpy
 import os
 import re
@@ -87,16 +88,48 @@ def get_margin_x_frame(config):
     return (int(ml * fps), int(mr * fps))
 
 
+def update_config(config, args):
+    print("org config:", config)
+    print("args:", args)
+    if config['render']['frame_rate'] != args.fps:
+        config['render']['frame_rate'] = args.fps
+    if config['render']['resolution_percentage'] != args.percentage:
+        config['render']['resolution_percentage'] = args.percentage
+    print("new config:", config)
+
+
 if __name__ == "__main__":
     common = load_slide2video_module()
-    if len(sys.argv) < 4:
-        print("引数に、スライドデータと音声データのディレクトリを指定してください\n")
-        common.usage()
-        sys.exit(1)
-
     config = common.get_config()
 
-    data = get_data(sys.argv[-3], sys.argv[-2], config["extension"])
+    script_args = sys.argv[sys.argv.index("--") + 1 :]
+    print(script_args)
+
+    parser = argparse.ArgumentParser(prog='slide2video.sh', description="指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する")
+    parser.add_argument("slide_data", metavar="SLIDE_DIR", type=str, help="スライドデータを格納したディレクトリのパス")
+    parser.add_argument("audio_data", metavar="AUDIO_DIR", type=str, help="音声データを格納したディレクトリのパス")
+    parser.add_argument("blend_file", metavar="BLEND_FILE", type=str, help="作成するBlenderプロジェクトファイルのパス")
+    parser.add_argument(
+        "-r",
+        "--fps",
+        metavar="FRAME_RATE",
+        type=int,
+        default=config["render"]["frame_rate"],
+        help=f"フレームレート(fps). デフォルト値: {config['render']['frame_rate']}",
+    )
+    parser.add_argument(
+        "-p",
+        "--percentage",
+        metavar="RESOLUTION_PERCENTAGE",
+        type=int,
+        default=config['render']['resolution_percentage'],
+        help=f"解像度のパーセンテージ. デフォルト値: {config['render']['resolution_percentage']}",
+    )
+
+    args = parser.parse_args(script_args)
+    update_config(config, args)
+
+    data = get_data(args.slide_data, args.audio_data, config["extension"])
     # print(data)
 
     # New File VideoEditing
@@ -105,7 +138,7 @@ if __name__ == "__main__":
 
     # save blend file
     #   blender独自の相対パスでリソース保存する場合は事前にblendファイル保存が必要なため
-    blend_file_path = os.path.abspath(os.path.expanduser(sys.argv[-1]))
+    blend_file_path = os.path.abspath(os.path.expanduser(args.blend_file))
     blend_file_dir = os.path.dirname(blend_file_path)
 
     if not os.path.exists(blend_file_dir):
