@@ -16,16 +16,7 @@
 
 ## 使い方
 
-以下を実行します。
-
-`SLIDE_DATA_DIR`と`AUDIO_DATA_DIR`は、それぞれ、`スライド資料`と`音声データ`を格納したディレクトリのパスです。
-
-~~~sh
-python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
-~~~
-
-もしくは、`slide2video.sh`をインストールしている場合は、以下を実行します。
-シェルの場合、第三引数`BLEND_FILE_PATH`を省略すると、`./slide2video.blend`が作成されます。
+以下を実行します。(`SLIDE_DATA_DIR`と`AUDIO_DATA_DIR`は、それぞれ、`スライド資料`と`音声データ`を格納したディレクトリのパスです。)
 
 ~~~shell
 ~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
@@ -35,6 +26,52 @@ python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 スライド資料と音声データを対応づけて、ビデオシーケンサーのチャンネルに配置します。
 
 この時点で、ビデオシーケンサーを再生すれば、スライド＋音声のプレビューを確認できます。必要があれば、効果や字幕を手動で追加してください。
+
+### ヘルプ
+
+~~~shell
+~/bin/slide2video.sh -h
+usage: slide2video.sh [-h] [-r FRAME_RATE] [-p RESOLUTION_PERCENTAGE] SLIDE_DIR AUDIO_DIR BLEND_FILE
+
+指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する
+
+positional arguments:
+  SLIDE_DIR             スライドデータを格納したディレクトリのパス
+  AUDIO_DIR             音声データを格納したディレクトリのパス
+  BLEND_FILE            作成するBlenderプロジェクトファイルのパス
+
+options:
+  -h, --help            show this help message and exit
+  -r FRAME_RATE, --fps FRAME_RATE
+                        フレームレート(fps). デフォルト値: 60
+  -p RESOLUTION_PERCENTAGE, --percentage RESOLUTION_PERCENTAGE
+                        解像度のパーセンテージ. デフォルト値: 100
+~~~
+
+## インストール方法
+
+`Makefile`にインストール先ディレクトリと、`Blender`コマンドのパスが変数に定義されています。 環境に合せて以下の変数を修正し、
+
+~~~shell
+# 環境に合せてインストール先とBlenderコマンドを変更してください
+DST_BIN=${HOME}/bin
+DST_DIR=${HOME}/opt/slide2video
+BLENDER_COMMAND=/Applications/Blender.app/Contents/MacOS/Blender
+~~~
+
+以下のコマンドでインストールできます。
+
+デフォルトでは、`~/bin`に`slide2video.sh`がインストールされます。 なお、`bin/slide2video.sh`は、`~/opt/bin/slide2vidoe.sh`のシンボリックリンクになります。
+
+~~~shell
+make install
+~~~
+
+また、以下でインストールしたスクリプトを削除できます。
+
+~~~shell
+make clean
+~~~
 
 ## カスタマイズ
 
@@ -48,8 +85,8 @@ python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
     "render": {
         "resolution_x": 1920,
         "resolution_y": 1080,
-        "resolution_percentage": 50,
-        "frame_rate": 30
+        "resolution_percentage": 100,
+        "frame_rate": 60
     },
     "image": {
         "default_num_of_frames": 30
@@ -61,8 +98,7 @@ python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
     "extension": {
         "image": "jpg",
         "audio": "wav"
-    },
-    "blender": "/Applications/Blender.app/Contents/MacOS/Blender"
+    }
 }
 ~~~
 
@@ -72,29 +108,11 @@ python3 slide2video.py SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 |:--:|:---:|:---|:---|
 |render|resolution_x|レンダリング結果の水平解像度|1920|
 |render|resolution_y|レンダリング結果の垂直解像度|1080|
-|render|resolution_percentage|レンダリング解像度の割合(単位:%)|50|
-|render|frame_rate|レンダリング結果のフレームレート(単位:fps)|30|
+|render|resolution_percentage|レンダリング解像度の割合(単位:%)|100|
+|render|frame_rate|レンダリング結果のフレームレート(単位:fps)|60|
 |image|default_num_of_frames|スライドに対応する音声ファイルがない場合のスライドの表示フレーム数|30|
 |audio|margin_left_sec|スライド表示してから音声ファイル再生までの待ち時間(単位:秒)|0.8|
 |audio|margin_right_sec|音声ファイル再生終了から次のスライド表示までの待ち時間(単位:秒)|1.0|
 |extension|image|スライド画像ファイルの拡張子|jpg|
 |extension|audio|音声データファイルの拡張子|wav|
-|blender|-|コマンドライン起動時に使用するBlenderコマンドのパス|/Applications/Blender.app/Contents/MacOS/Blender|
 
-## 呼び出し用シェルスクリプトのインストール
-
-`slide2video.py` を呼び出す場合、ディレクトリの移動や、スクリプトのパスを指定するなど、実行するまでの作業が煩雑なため、
-呼び出し用シェルスクリプトを用意しています。
-
-以下を実行してインストールしてください。デフォルトでは`~/bin`にインストールされます。
-
-~~~shell
-make install
-~~~
-
-インストール後は、以下で実行できるようになります。
-(第三引数`BLEND_FILE_PATH`は省略可能。省略時は`./slide2video.blend`指定されます。)
-
-~~~sh
-~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
-~~~
