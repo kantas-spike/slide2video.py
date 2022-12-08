@@ -1,10 +1,17 @@
 import argparse
 import bpy
+import json
 import os
 import re
 import sys
 import glob
-from importlib import machinery
+
+
+def get_config():
+    path = os.path.join(os.path.dirname(__file__), "..", "etc", "settings.json")
+    print(path)
+    with open(path) as f:
+        return json.load(f)
 
 
 def get_no_from_path(path):
@@ -74,13 +81,6 @@ def setup_render(config, blend_file_dir):
     render.filepath = blend_file_dir + "/"
 
 
-def load_slide2video_module():
-    loader = machinery.SourceFileLoader(
-        "slide2video", os.path.join(os.path.dirname(__file__), "slide2video.py")
-    )
-    return loader.load_module()
-
-
 def get_margin_x_frame(config):
     fps = config["render"]["frame_rate"]
     ml = config["audio"]["margin_left_sec"]
@@ -99,8 +99,7 @@ def update_config(config, args):
 
 
 if __name__ == "__main__":
-    common = load_slide2video_module()
-    config = common.get_config()
+    config = get_config()
 
     script_args = sys.argv[sys.argv.index("--") + 1 :]
     print(script_args)

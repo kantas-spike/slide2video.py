@@ -15,6 +15,5 @@
     "extension": {
         "image": "jpg",
         "audio": "wav"
-    },
-    "blender": "/Applications/Blender.app/Contents/MacOS/Blender"
+    }
 }
