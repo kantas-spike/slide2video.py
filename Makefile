@@ -1,5 +1,5 @@
 # リリース用(1) or 開発用(0)
-RELEASE ?= 0
+RELEASE ?= 1
 
 # 環境に合せてインストール先とBlenderコマンドを変更してください
 ifeq ($(RELEASE), 1)  # リリース用設定
