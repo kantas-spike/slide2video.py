@@ -1,2 +1,4 @@
 __pycache__/
-slide2video.sh
+bin/slide2video.sh
+build/slide2video.sh
+build/slide2video/
