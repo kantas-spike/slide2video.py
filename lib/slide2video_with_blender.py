@@ -91,10 +91,10 @@ def get_margin_x_frame(config):
 def update_config(config, args):
     print("org config:", config)
     print("args:", args)
-    if config['render']['frame_rate'] != args.fps:
-        config['render']['frame_rate'] = args.fps
-    if config['render']['resolution_percentage'] != args.percentage:
-        config['render']['resolution_percentage'] = args.percentage
+    if config["render"]["frame_rate"] != args.fps:
+        config["render"]["frame_rate"] = args.fps
+    if config["render"]["resolution_percentage"] != args.percentage:
+        config["render"]["resolution_percentage"] = args.percentage
     print("new config:", config)
 
 
@@ -104,10 +104,18 @@ if __name__ == "__main__":
     script_args = sys.argv[sys.argv.index("--") + 1 :]
     print(script_args)
 
-    parser = argparse.ArgumentParser(prog='slide2video.sh', description="指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する")
-    parser.add_argument("slide_data", metavar="SLIDE_DIR", type=str, help="スライドデータを格納したディレクトリのパス")
-    parser.add_argument("audio_data", metavar="AUDIO_DIR", type=str, help="音声データを格納したディレクトリのパス")
-    parser.add_argument("blend_file", metavar="BLEND_FILE", type=str, help="作成するBlenderプロジェクトファイルのパス")
+    parser = argparse.ArgumentParser(
+        prog="slide2video.sh", description="指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する"
+    )
+    parser.add_argument(
+        "slide_data", metavar="SLIDE_DIR", type=str, help="スライドデータを格納したディレクトリのパス"
+    )
+    parser.add_argument(
+        "audio_data", metavar="AUDIO_DIR", type=str, help="音声データを格納したディレクトリのパス"
+    )
+    parser.add_argument(
+        "blend_file", metavar="BLEND_FILE", type=str, help="作成するBlenderプロジェクトファイルのパス"
+    )
     parser.add_argument(
         "-r",
         "--fps",
@@ -121,7 +129,7 @@ if __name__ == "__main__":
         "--percentage",
         metavar="RESOLUTION_PERCENTAGE",
         type=int,
-        default=config['render']['resolution_percentage'],
+        default=config["render"]["resolution_percentage"],
         help=f"解像度のパーセンテージ. デフォルト値: {config['render']['resolution_percentage']}",
     )
 
