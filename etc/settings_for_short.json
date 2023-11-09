@@ -1,0 +1,19 @@
+{
+  "render": {
+    "resolution_x": 1080,
+    "resolution_y": 1920,
+    "resolution_percentage": 100,
+    "frame_rate": 60
+  },
+  "image": {
+    "default_num_of_frames": 30
+  },
+  "audio": {
+    "margin_left_sec": 0,
+    "margin_right_sec": 0.2
+  },
+  "extension": {
+    "image": "jpg",
+    "audio": "wav"
+  }
+}

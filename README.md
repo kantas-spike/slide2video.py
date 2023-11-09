@@ -8,7 +8,7 @@
 スライド資料、および音声データファイルは以下のものを前提としています。
 
 - `スライド資料`: "slide`1`.jpg"などの`スライド番号`をファイル名に含む画像ファイル。
-- `音声データ`: "`1`_xxx.wav"などの`スライド番号`をファイル名に持つ音声ファイル。
+- `音声データ`: "`1`\_xxx.wav"などの`スライド番号`をファイル名に持つ音声ファイル。
 
 各ファイル名の`スライド番号`から`スライド資料`と`音声データ`を対応付けます。
 
@@ -18,9 +18,9 @@
 
 以下を実行します。(`SLIDE_DATA_DIR`と`AUDIO_DATA_DIR`は、それぞれ、`スライド資料`と`音声データ`を格納したディレクトリのパスです。)
 
-~~~shell
+```shell
 ~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
-~~~
+```
 
 実行の結果、Blenderの`Video Editing`を起動し、
 スライド資料と音声データを対応づけて、ビデオシーケンサーのチャンネルに配置します。
@@ -29,7 +29,7 @@
 
 ### ヘルプ
 
-~~~shell
+```shell
 ~/bin/slide2video.sh -h
 usage: slide2video.sh [-h] [-r FRAME_RATE] [-p RESOLUTION_PERCENTAGE] SLIDE_DIR AUDIO_DIR BLEND_FILE
 
@@ -46,32 +46,32 @@ options:
                         フレームレート(fps). デフォルト値: 60
   -p RESOLUTION_PERCENTAGE, --percentage RESOLUTION_PERCENTAGE
                         解像度のパーセンテージ. デフォルト値: 100
-~~~
+```
 
 ## インストール方法
 
 `Makefile`にインストール先ディレクトリと、`Blender`コマンドのパスが変数に定義されています。 環境に合せて以下の変数を修正し、
 
-~~~shell
+```shell
 # 環境に合せてインストール先とBlenderコマンドを変更してください
 DST_BIN=${HOME}/bin
 DST_DIR=${HOME}/opt/slide2video
 BLENDER_COMMAND=/Applications/Blender.app/Contents/MacOS/Blender
-~~~
+```
 
 以下のコマンドでインストールできます。
 
 デフォルトでは、`~/bin`に`slide2video.sh`がインストールされます。 なお、`bin/slide2video.sh`は、`~/opt/bin/slide2vidoe.sh`のシンボリックリンクになります。
 
-~~~shell
+```shell
 make install
-~~~
+```
 
 また、以下でインストールしたスクリプトを削除できます。
 
-~~~shell
+```shell
 make clean
-~~~
+```
 
 ## カスタマイズ
 
@@ -80,39 +80,38 @@ make clean
 
 ### `settings.json`の例
 
-~~~json
+```json
 {
-    "render": {
-        "resolution_x": 1920,
-        "resolution_y": 1080,
-        "resolution_percentage": 100,
-        "frame_rate": 60
-    },
-    "image": {
-        "default_num_of_frames": 30
-    },
-    "audio": {
-        "margin_left_sec": 0.8,
-        "margin_right_sec": 1.0
-    },
-    "extension": {
-        "image": "jpg",
-        "audio": "wav"
-    }
+  "render": {
+    "resolution_x": 1920,
+    "resolution_y": 1080,
+    "resolution_percentage": 100,
+    "frame_rate": 60
+  },
+  "image": {
+    "default_num_of_frames": 30
+  },
+  "audio": {
+    "margin_left_sec": 0.8,
+    "margin_right_sec": 1.0
+  },
+  "extension": {
+    "image": "jpg",
+    "audio": "wav"
+  }
 }
-~~~
+```
 
 ### `settings.json`の設定項目の説明
 
-|キー|サブキー|説明|デフォルト値|
-|:--:|:---:|:---|:---|
-|render|resolution_x|レンダリング結果の水平解像度|1920|
-|render|resolution_y|レンダリング結果の垂直解像度|1080|
-|render|resolution_percentage|レンダリング解像度の割合(単位:%)|100|
-|render|frame_rate|レンダリング結果のフレームレート(単位:fps)|60|
-|image|default_num_of_frames|スライドに対応する音声ファイルがない場合のスライドの表示フレーム数|30|
-|audio|margin_left_sec|スライド表示してから音声ファイル再生までの待ち時間(単位:秒)|0.8|
-|audio|margin_right_sec|音声ファイル再生終了から次のスライド表示までの待ち時間(単位:秒)|1.0|
-|extension|image|スライド画像ファイルの拡張子|jpg|
-|extension|audio|音声データファイルの拡張子|wav|
-
+|   キー    |       サブキー        | 説明                                                               | デフォルト値 |
+| :-------: | :-------------------: | :----------------------------------------------------------------- | :----------- |
+|  render   |     resolution_x      | レンダリング結果の水平解像度                                       | 1920         |
+|  render   |     resolution_y      | レンダリング結果の垂直解像度                                       | 1080         |
+|  render   | resolution_percentage | レンダリング解像度の割合(単位:%)                                   | 100          |
+|  render   |      frame_rate       | レンダリング結果のフレームレート(単位:fps)                         | 60           |
+|   image   | default_num_of_frames | スライドに対応する音声ファイルがない場合のスライドの表示フレーム数 | 30           |
+|   audio   |    margin_left_sec    | スライド表示してから音声ファイル再生までの待ち時間(単位:秒)        | 0.8          |
+|   audio   |   margin_right_sec    | 音声ファイル再生終了から次のスライド表示までの待ち時間(単位:秒)    | 1.0          |
+| extension |         image         | スライド画像ファイルの拡張子                                       | jpg          |
+| extension |         audio         | 音声データファイルの拡張子                                         | wav          |

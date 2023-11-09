@@ -30,7 +30,7 @@ install: $(TARGET_SHELL)
 	mkdir -p ${DST_DIR}/etc
 	cp -p $< ${DST_DIR}/bin
 	cp -p lib/*.py ${DST_DIR}/lib/
-	cp -p etc/settings.json ${DST_DIR}/etc/
+	cp -p etc/settings*.json ${DST_DIR}/etc/
 	chmod u+x ${DST_DIR}/bin/$(<F)
 	ln -s $(abspath ${DST_DIR}/bin/$(<F)) ${DST_BIN}/$(<F)
 
