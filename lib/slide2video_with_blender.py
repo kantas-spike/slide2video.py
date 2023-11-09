@@ -6,9 +6,12 @@ import re
 import sys
 import glob
 
+DEFAULT_CONFIG_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "etc", "settings.json")
+)
 
-def get_config():
-    path = os.path.join(os.path.dirname(__file__), "..", "etc", "settings.json")
+
+def get_config(path):
     print(path)
     with open(path) as f:
         return json.load(f)
@@ -88,7 +91,8 @@ def get_margin_x_frame(config):
     return (int(ml * fps), int(mr * fps))
 
 
-def update_config(config, args):
+def update_config(args):
+    config = get_config(args.config)
     print("org config:", config)
     print("args:", args)
     if config["render"]["frame_rate"] != args.fps:
@@ -96,10 +100,11 @@ def update_config(config, args):
     if config["render"]["resolution_percentage"] != args.percentage:
         config["render"]["resolution_percentage"] = args.percentage
     print("new config:", config)
+    return config
 
 
 if __name__ == "__main__":
-    config = get_config()
+    default_config = get_config(DEFAULT_CONFIG_PATH)
 
     script_args = sys.argv[sys.argv.index("--") + 1 :]
     print(script_args)
@@ -121,20 +126,28 @@ if __name__ == "__main__":
         "--fps",
         metavar="FRAME_RATE",
         type=int,
-        default=config["render"]["frame_rate"],
-        help=f"フレームレート(fps). デフォルト値: {config['render']['frame_rate']}",
+        default=default_config["render"]["frame_rate"],
+        help=f"フレームレート(fps). デフォルト値: {default_config['render']['frame_rate']}",
     )
     parser.add_argument(
         "-p",
         "--percentage",
         metavar="RESOLUTION_PERCENTAGE",
         type=int,
-        default=config["render"]["resolution_percentage"],
-        help=f"解像度のパーセンテージ. デフォルト値: {config['render']['resolution_percentage']}",
+        default=default_config["render"]["resolution_percentage"],
+        help=f"解像度のパーセンテージ. デフォルト値: {default_config['render']['resolution_percentage']}",
+    )
+    parser.add_argument(
+        "-c",
+        "--config",
+        metavar="CONFIG_PATH",
+        type=str,
+        default=DEFAULT_CONFIG_PATH,
+        help=f"設定ファイルのパス. デフォルト値: {DEFAULT_CONFIG_PATH}",
     )
 
     args = parser.parse_args(script_args)
-    update_config(config, args)
+    config = update_config(args)
 
     data = get_data(args.slide_data, args.audio_data, config["extension"])
     # print(data)
