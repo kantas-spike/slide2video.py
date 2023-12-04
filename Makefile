@@ -15,24 +15,34 @@ BLENDER_COMMAND=/Applications/Blender.app/Contents/MacOS/Blender
 WK_DIR=./build
 
 TARGET_SHELL=$(WK_DIR)/slide2video.sh
+TARGET_SHORT_SHELL=$(WK_DIR)/slide2video_short.sh
 
 $(TARGET_SHELL): ./build/slide2video.sh.tmpl
 	cat $< | sed -e 's#@@@SCRIPT_HOME_DIR@@@#${DST_DIR}#' | sed -e 's#@@@BLENDER_COMMAND@@@#${BLENDER_COMMAND}#' > $@
 
+$(TARGET_SHORT_SHELL): ./build/slide2video_short.sh.tmpl
+	cat $< | sed -e 's#@@@SCRIPT_HOME_DIR@@@#${DST_DIR}#' | sed -e 's#@@@BLENDER_COMMAND@@@#${BLENDER_COMMAND}#' > $@
+
 clean:
 	rm $(TARGET_SHELL)
+	rm $(TARGET_SHORT_SHELL)
 	rm ${DST_BIN}/slide2video.sh
+	rm ${DST_BIN}/slide2video_short.sh
 	rm -r ${DST_DIR}
 
-install: $(TARGET_SHELL)
+install: $(TARGET_SHELL) $(TARGET_SHORT_SHELL)
 	mkdir -p ${DST_DIR}/bin
 	mkdir -p ${DST_DIR}/lib
 	mkdir -p ${DST_DIR}/etc
-	cp -p $< ${DST_DIR}/bin
+	cp -p $^ ${DST_DIR}/bin
 	cp -p lib/*.py ${DST_DIR}/lib/
 	cp -p etc/settings*.json ${DST_DIR}/etc/
-	chmod u+x ${DST_DIR}/bin/$(<F)
-	ln -s $(abspath ${DST_DIR}/bin/$(<F)) ${DST_BIN}/$(<F)
+	for f in $(^F) ; \
+	do \
+		chmod u+x ${DST_DIR}/bin/$$f ; \
+		ln -s $(abspath ${DST_DIR}/bin/$$f) ${DST_BIN}/$$f ; \
+	done
+
 
 
 reinstall:
