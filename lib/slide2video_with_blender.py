@@ -51,12 +51,7 @@ def get_data(slide_dir, audio_dir, config):
 
 
 def get_framerate_preset(frame_rate):
-    paths = bpy.utils.preset_paths("framerate")
-
-    if len(paths) == 0:
-        raise Exception("Cannot find framerate preset paths")
-    else:
-        return bpy.utils.preset_find(str(frame_rate), paths[-1])
+    return bpy.utils.preset_find(str(frame_rate), "framerate")
 
 
 def setup_render(config, blend_file_dir):
