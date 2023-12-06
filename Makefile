@@ -21,7 +21,7 @@ $(TARGET_SHELL): ./build/slide2video.sh.tmpl
 	cat $< | sed -e 's#@@@SCRIPT_HOME_DIR@@@#${DST_DIR}#' | sed -e 's#@@@BLENDER_COMMAND@@@#${BLENDER_COMMAND}#' > $@
 
 $(TARGET_SHORT_SHELL): ./build/slide2video_short.sh.tmpl
-	cat $< | sed -e 's#@@@SCRIPT_HOME_DIR@@@#${DST_DIR}#' | sed -e 's#@@@BLENDER_COMMAND@@@#${BLENDER_COMMAND}#' > $@
+	cat $< | sed -e 's#@@@SCRIPT_HOME_DIR@@@#${DST_DIR}#g' | sed -e 's#@@@BLENDER_COMMAND@@@#${BLENDER_COMMAND}#' > $@
 
 clean:
 	rm $(TARGET_SHELL)
