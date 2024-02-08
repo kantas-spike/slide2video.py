@@ -98,6 +98,21 @@ def update_config(args):
     return config
 
 
+def view_all():
+    for w in bpy.context.window_manager.windows:
+        for a in w.screen.areas:
+            if a.type == "SEQUENCE_EDITOR" and a.spaces[0].view_type == "SEQUENCER":
+                for r in a.regions:
+                    if r.type == "WINDOW":
+                        print(a.type)
+                        print(r.type)
+                        with bpy.context.temp_override(window=w, area=a, region=r):
+                            # bpy.ops.sequencer.view_all() を直接呼ぶと表示が崩れるため以下で対応
+                            bpy.ops.sequencer.view_selected()
+                            bpy.ops.sequencer.select_all(action="DESELECT")
+                            return
+
+
 if __name__ == "__main__":
     default_config = get_config(DEFAULT_CONFIG_PATH)
 
@@ -207,6 +222,9 @@ if __name__ == "__main__":
         f_start = frame_end
 
     bpy.data.scenes["Scene"].frame_end = f_start
+
+    # bpy.ops.sequencer.view_all()
+    view_all()
 
     # save blend file
     bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)
