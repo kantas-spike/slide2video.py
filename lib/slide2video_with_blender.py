@@ -105,16 +105,26 @@ if __name__ == "__main__":
     print(script_args)
 
     parser = argparse.ArgumentParser(
-        prog="slide2video.sh", description="指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する"
+        prog="slide2video.sh",
+        description="指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する",
     )
     parser.add_argument(
-        "slide_data", metavar="SLIDE_DIR", type=str, help="スライドデータを格納したディレクトリのパス"
+        "slide_data",
+        metavar="SLIDE_DIR",
+        type=str,
+        help="スライドデータを格納したディレクトリのパス",
     )
     parser.add_argument(
-        "audio_data", metavar="AUDIO_DIR", type=str, help="音声データを格納したディレクトリのパス"
+        "audio_data",
+        metavar="AUDIO_DIR",
+        type=str,
+        help="音声データを格納したディレクトリのパス",
     )
     parser.add_argument(
-        "blend_file", metavar="BLEND_FILE", type=str, help="作成するBlenderプロジェクトファイルのパス"
+        "blend_file",
+        metavar="BLEND_FILE",
+        type=str,
+        help="作成するBlenderプロジェクトファイルのパス",
     )
     parser.add_argument(
         "-r",
