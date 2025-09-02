@@ -1,10 +1,11 @@
 import argparse
-import bpy
+import glob
 import json
 import os
 import re
 import sys
-import glob
+
+import bpy
 
 DEFAULT_CONFIG_PATH = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "etc", "settings.json")
@@ -54,7 +55,7 @@ def get_framerate_preset(frame_rate):
     return bpy.utils.preset_find(str(frame_rate), "framerate")
 
 
-def setup_render(config, blend_file_dir):
+def setup_render_settings(config):
     render = bpy.data.scenes["Scene"].render
 
     # 画面解像度
@@ -75,8 +76,8 @@ def setup_render(config, blend_file_dir):
     # Encoding Container を MPEG-4 に
     render.ffmpeg.format = "MPEG4"
 
-    # 動画出力ディレクトリを指定
-    render.filepath = blend_file_dir + "/"
+    # 動画出力先を指定(注:{blend_name}は.blendファイルの名前)
+    render.filepath = "//{blend_name}.mp4"
 
 
 def get_margin_x_frame(config):
@@ -113,11 +114,8 @@ def view_all():
                             return
 
 
-if __name__ == "__main__":
-    default_config = get_config(DEFAULT_CONFIG_PATH)
-
-    script_args = sys.argv[sys.argv.index("--") + 1 :]
-    print(script_args)
+def parse_args(script_args):
+    render_config = get_config(DEFAULT_CONFIG_PATH)["render"]
 
     parser = argparse.ArgumentParser(
         prog="slide2video.sh",
@@ -146,16 +144,16 @@ if __name__ == "__main__":
         "--fps",
         metavar="FRAME_RATE",
         type=int,
-        default=default_config["render"]["frame_rate"],
-        help=f"フレームレート(fps). デフォルト値: {default_config['render']['frame_rate']}",
+        default=render_config["frame_rate"],
+        help=f"フレームレート(fps). デフォルト値: {render_config['frame_rate']}",
     )
     parser.add_argument(
         "-p",
         "--percentage",
         metavar="RESOLUTION_PERCENTAGE",
         type=int,
-        default=default_config["render"]["resolution_percentage"],
-        help=f"解像度のパーセンテージ. デフォルト値: {default_config['render']['resolution_percentage']}",
+        default=render_config["resolution_percentage"],
+        help=f"解像度のパーセンテージ. デフォルト値: {render_config['resolution_percentage']}",
     )
     parser.add_argument(
         "-c",
@@ -167,31 +165,14 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args(script_args)
-    config = update_config(args)
 
-    data = get_data(args.slide_data, args.audio_data, config["extension"])
-    # print(data)
+    return args
 
-    # New File VideoEditing
-    bpy.context.preferences.view.show_splash = False
-    bpy.ops.wm.read_homefile(app_template="Video_Editing")
 
-    # save blend file
-    #   blender独自の相対パスでリソース保存する場合は事前にblendファイル保存が必要なため
-    blend_file_path = os.path.abspath(os.path.expanduser(args.blend_file))
-    blend_file_dir = os.path.dirname(blend_file_path)
-
-    if not os.path.exists(blend_file_dir):
-        os.makedirs(blend_file_dir)
-
-    bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)
-
-    # renderを設定
-    setup_render(config["render"], blend_file_dir)
-
+def setup_strips(data, config):
     se = bpy.context.scene.sequence_editor
     f_start = 1
-    audio_channel = 1
+    audio_channel = 2
     image_channel = 3
 
     default_num_of_frames = config["image"]["default_num_of_frames"]
@@ -201,9 +182,11 @@ if __name__ == "__main__":
 
     for item in data.values():
         image, audio = item["slide"], item["audio"]
-        # Use special relative paths starting with '//' in Blender, it meaning relative from the Blender file.
-        image = bpy.path.relpath(image, start=blend_file_dir)
-        audio = bpy.path.relpath(audio, start=blend_file_dir)
+        # Use special relative paths starting with '//' in Blender,
+        # it meaning relative from the Blender file.
+        image = bpy.path.relpath(image)
+        if audio:
+            audio = bpy.path.relpath(audio)
         print(audio, image)
 
         if audio is not None:
@@ -223,8 +206,53 @@ if __name__ == "__main__":
 
     bpy.data.scenes["Scene"].frame_end = f_start
 
-    # bpy.ops.sequencer.view_all()
+    # 全てのストリップをビューに表示
     view_all()
 
-    # save blend file
+
+def create_blend_file(blend_file_path):
+    blend_file_dir = os.path.dirname(blend_file_path)
+
+    # New File VideoEditing
+    bpy.context.preferences.view.show_splash = False
+    bpy.ops.wm.read_homefile(app_template="Video_Editing")
+
+    if not os.path.exists(blend_file_dir):
+        os.makedirs(blend_file_dir)
+
     bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)
+
+
+def main():
+    # -- 以降の引数を取得
+    script_args = sys.argv[sys.argv.index("--") + 1 :]
+    # print(script_args)
+
+    # 引数を解析
+    args = parse_args(script_args)
+
+    # 引数の値をもとに設定を更新
+    config = update_config(args)
+
+    # スライドの画像と音声データを取得
+    data = get_data(args.slide_data, args.audio_data, config["extension"])
+    # print(data)
+
+    # save blend file
+    blend_file_path = os.path.abspath(os.path.expanduser(args.blend_file))
+
+    # .blendファイルを作成('//'パスでリソース保存するために事前にblendファイルを作成)
+    create_blend_file(blend_file_path)
+
+    # render設定を更新
+    setup_render_settings(config["render"])
+
+    # 画像、音声stripを配置
+    setup_strips(data, config)
+
+    # .blendファイルを保存
+    bpy.ops.wm.save_as_mainfile(filepath=blend_file_path)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
