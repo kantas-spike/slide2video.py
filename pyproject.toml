@@ -1,0 +1,13 @@
+[project]
+name = "slide2video.py"
+version = "0.1.0"
+description = "本ツールは、スライド資料と、その資料用の音声データからBlenderの動画編集ファイルを作成するツールです。"
+readme = "README.md"
+requires-python = ">=3.10.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "fake-bpy-module>=20250901",
+    "ruff>=0.12.11",
+]
