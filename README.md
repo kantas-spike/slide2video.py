@@ -1,4 +1,4 @@
-# slide2video.py
+# slide2video
 
 本ツールは、スライド資料と、その資料用の音声データからBlenderの動画編集ファイルを作成するツールです。
 実行すると、ビデオシーケンサーにスライドと音声が配置されたファイルが作成されます。
@@ -19,7 +19,7 @@
 以下を実行します。(`SLIDE_DATA_DIR`と`AUDIO_DATA_DIR`は、それぞれ、`スライド資料`と`音声データ`を格納したディレクトリのパスです。)
 
 ```shell
-~/bin/slide2video.sh SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
+slide2video SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 ```
 
 実行の結果、Blenderの`Video Editing`を起動し、
@@ -30,8 +30,8 @@
 ### ヘルプ
 
 ```shell
-~/bin/slide2video.sh -h
-usage: slide2video.sh [-h] [-r FRAME_RATE] [-p RESOLUTION_PERCENTAGE] SLIDE_DIR AUDIO_DIR BLEND_FILE
+slide2video -h
+usage: slide2video [-h] [--blender BLENDER_PATH] [-r FRAME_RATE] [-p RESOLUTION_PERCENTAGE] [-c CONFIG_PATH] SLIDE_DIR AUDIO_DIR BLEND_FILE
 
 指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する
 
@@ -42,41 +42,55 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
+  --blender BLENDER_PATH
+                        blenderコマンドのパス: デフォルト値: /usr/local/bin/blender
   -r FRAME_RATE, --fps FRAME_RATE
                         フレームレート(fps). デフォルト値: 60
   -p RESOLUTION_PERCENTAGE, --percentage RESOLUTION_PERCENTAGE
                         解像度のパーセンテージ. デフォルト値: 100
+  -c CONFIG_PATH, --config CONFIG_PATH
+                        設定ファイルのパス. デフォルト値: /Users/kanta/.local/share/uv/tools/slide2video/lib/python3.10/site-packages/slide2video/etc/settings.json
 ```
 
 ## インストール方法
 
-`Makefile`にインストール先ディレクトリと、`Blender`コマンドのパスが変数に定義されています。 環境に合せて以下の変数を修正し、
+[uv](https://docs.astral.sh/uv/)を使用して、ツールとしてスクリプトをインストールします。
+
+まずは、本リポジトリをチェックアウトしたディレクトリを移動後に、以下を実行します。
 
 ```shell
-# 環境に合せてインストール先とBlenderコマンドを変更してください
-DST_BIN=${HOME}/bin
-DST_DIR=${HOME}/opt/slide2video
-BLENDER_COMMAND=/Applications/Blender.app/Contents/MacOS/Blender
+uv tool install tool .
 ```
 
-以下のコマンドでインストールできます。
+以下の2つのスクリプトがインストールされます。
 
-デフォルトでは、`~/bin`に`slide2video.sh`がインストールされます。 なお、`bin/slide2video.sh`は、`~/opt/bin/slide2vidoe.sh`のシンボリックリンクになります。
+| スクリプト                       | 説明           | 読み込む設定ファイル                                                     |
+| -------------------------------- | -------------- | ------------------------------------------------------------------------ |
+| `~/.local/bin/slide2video`       | 通常動画用     | [settings.json](./src/slide2video/etc/settings.json)                     |
+| `~/.local/bin/slide2video_short` | ショート動画用 | [settings_for_short.json](./src/slide2video/etc/settings_for_short.json) |
+
+`~/.local/bin`にシェルのPATHが通っていない場合は、手動で設定を追加するか、
+以下のコマンドを実行後にシェルを再起動してください。
 
 ```shell
-make install
+uv tool update-shell
 ```
 
 また、以下でインストールしたスクリプトを削除できます。
 
 ```shell
-make clean
+uv tool uninstall slide2video
 ```
 
 ## カスタマイズ
 
 本ツールは、設定ファイル(`settings.json`)によりカスタマイズできます。
-必要に応じて変更してください。
+
+JSON形式の設定ファイルを作成し、スクリプト実行時に`-c`オプションで設定ファイルのパスを指定してください。
+
+```shell
+slide2video -c 作成した設定ファイルのパス ...
+```
 
 ### `settings.json`の例
 
