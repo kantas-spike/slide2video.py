@@ -119,7 +119,7 @@ def parse_args(script_args):
     render_config = get_config(DEFAULT_CONFIG_PATH)["render"]
 
     parser = argparse.ArgumentParser(
-        prog="slide2video.sh",
+        prog="slide2video",
         description="指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する",
     )
     parser.add_argument(
