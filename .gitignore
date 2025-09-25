@@ -1,8 +1,4 @@
 __pycache__/
-bin/slide2video.sh
-build/slide2video.sh
-build/slide2video_short.sh
-build/slide2video/
 .python-version
 
 .venv
