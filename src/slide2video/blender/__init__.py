@@ -10,6 +10,7 @@ import bpy
 DEFAULT_CONFIG_PATH = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "etc", "settings.json")
 )
+DEFAULT_BLENDER_PATH = "/usr/local/bin/blender"
 
 
 def get_config(path):
@@ -139,6 +140,13 @@ def parse_args(script_args):
         type=str,
         help="作成するBlenderプロジェクトファイルのパス",
     )
+    parser.add_argument(
+        "--blender",
+        default=DEFAULT_BLENDER_PATH,
+        metavar="BLENDER_PATH",
+        help=f"blenderコマンドのパス: デフォルト値: {DEFAULT_BLENDER_PATH}",
+    )
+
     parser.add_argument(
         "-r",
         "--fps",
