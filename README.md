@@ -129,3 +129,9 @@ slide2video -c 作成した設定ファイルのパス ...
 |   audio   |   margin_right_sec    | 音声ファイル再生終了から次のスライド表示までの待ち時間(単位:秒)    | 1.0          |
 | extension |         image         | スライド画像ファイルの拡張子                                       | jpg          |
 | extension |         audio         | 音声データファイルの拡張子                                         | wav          |
+
+## 更新履歴
+
+### v0.2.0
+
+`uv tool install`によりスクリプトをインストールするように修正

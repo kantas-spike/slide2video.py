@@ -1,6 +1,6 @@
 [project]
 name = "slide2video"
-version = "0.1.0"
+version = "0.2.0"
 description = "本ツールは、スライド資料と、その資料用の音声データからBlenderの動画編集ファイルを作成するツールです。"
 readme = "README.md"
 authors = [
