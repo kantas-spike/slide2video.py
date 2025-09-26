@@ -49,7 +49,7 @@ options:
   -p RESOLUTION_PERCENTAGE, --percentage RESOLUTION_PERCENTAGE
                         解像度のパーセンテージ. デフォルト値: 100
   -c CONFIG_PATH, --config CONFIG_PATH
-                        設定ファイルのパス. デフォルト値: /Users/kanta/.local/share/uv/tools/slide2video/lib/python3.10/site-packages/slide2video/etc/settings.json
+                        設定ファイルのパス. デフォルト値: ~/.local/share/uv/tools/slide2video/lib/python3.10/site-packages/slide2video/etc/settings.json
 ```
 
 ## インストール方法
