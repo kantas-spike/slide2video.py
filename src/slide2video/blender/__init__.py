@@ -10,7 +10,7 @@ import bpy
 DEFAULT_CONFIG_PATH = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "etc", "settings.json")
 )
-DEFAULT_BLENDER_PATH = "/usr/local/bin/blender"
+DEFAULT_BLENDER_PATH = "/opt/homebrew/bin/blender"
 
 
 def get_config(path):
@@ -57,7 +57,7 @@ def get_framerate_preset(frame_rate):
 
 
 def setup_render_settings(config):
-    render = bpy.data.scenes["Scene"].render
+    render = bpy.data.scenes["Edit"].render
 
     # 画面解像度
     render.resolution_x = config["resolution_x"]
@@ -198,7 +198,7 @@ def setup_strips(data, config):
         print(audio, image)
 
         if audio is not None:
-            snd = se.sequences.new_sound(
+            snd = se.strips.new_sound(
                 os.path.basename(audio), audio, audio_channel, (f_start + ml_frame)
             )
             snd.show_waveform = True
@@ -206,13 +206,13 @@ def setup_strips(data, config):
         else:
             frame_end = f_start + default_num_of_frames + ml_frame + mr_frame
 
-        img = se.sequences.new_image(
+        img = se.strips.new_image(
             os.path.basename(image), image, image_channel, f_start, fit_method="FIT"
         )
         img.frame_final_end = frame_end
         f_start = frame_end
 
-    bpy.data.scenes["Scene"].frame_end = f_start
+    bpy.data.scenes["Edit"].frame_end = f_start
 
     # 全てのストリップをビューに表示
     view_all()

@@ -13,7 +13,7 @@ def get_etc_dir():
 
 def parse_args(args=None) -> tuple[argparse.Namespace, list[str]]:
     parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("--blender", default="/usr/local/bin/blender")
+    parser.add_argument("--blender", default="/opt/homebrew/bin/blender")
     return parser.parse_known_args(args)
 
 

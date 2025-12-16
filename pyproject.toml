@@ -1,12 +1,12 @@
 [project]
 name = "slide2video"
-version = "0.2.0"
+version = "0.2.1"
 description = "本ツールは、スライド資料と、その資料用の音声データからBlenderの動画編集ファイルを作成するツールです。"
 readme = "README.md"
 authors = [
     { name = "kanta", email = "101532773+kantas-spike@users.noreply.github.com" }
 ]
-requires-python = ">=3.10.13"
+requires-python = ">=3.14"
 dependencies = []
 
 [project.scripts]
