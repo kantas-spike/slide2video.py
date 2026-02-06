@@ -78,7 +78,7 @@ def setup_render_settings(config):
     render.ffmpeg.format = "MPEG4"
 
     # 動画出力先を指定(注:{blend_name}は.blendファイルの名前)
-    render.filepath = "//{blend_name}.mp4"
+    render.filepath = config["output_path"]
 
 
 def get_margin_x_frame(config):
@@ -96,6 +96,8 @@ def update_config(args):
         config["render"]["frame_rate"] = args.fps
     if config["render"]["resolution_percentage"] != args.percentage:
         config["render"]["resolution_percentage"] = args.percentage
+    if config["render"]["output_path"] != args.output_path:
+        config["render"]["output_path"] = args.output_path
     print("new config:", config)
     return config
 
@@ -162,6 +164,14 @@ def parse_args(script_args):
         type=int,
         default=render_config["resolution_percentage"],
         help=f"解像度のパーセンテージ. デフォルト値: {render_config['resolution_percentage']}",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-path",
+        metavar="OUTPUT_PATH",
+        type=str,
+        default=render_config["output_path"],
+        help=f"レンダリング結果の出力先. デフォルト値: {render_config['output_path']}",
     )
     parser.add_argument(
         "-c",

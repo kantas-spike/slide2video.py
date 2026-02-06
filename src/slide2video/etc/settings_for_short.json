@@ -3,7 +3,8 @@
     "resolution_x": 1080,
     "resolution_y": 1920,
     "resolution_percentage": 100,
-    "frame_rate": 60
+    "frame_rate": 60,
+    "output_path": "//{blend_name}.mp4"
   },
   "image": {
     "default_num_of_frames": 30
