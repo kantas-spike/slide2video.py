@@ -31,7 +31,7 @@ slide2video SLIDE_DATA_DIR AUDIO_DATA_DIR BLEND_FILE_PATH
 
 ```shell
 slide2video -h
-usage: slide2video [-h] [--blender BLENDER_PATH] [-r FRAME_RATE] [-p RESOLUTION_PERCENTAGE] [-c CONFIG_PATH] SLIDE_DIR AUDIO_DIR BLEND_FILE
+usage: slide2video [-h] [--blender BLENDER_PATH] [-r FRAME_RATE] [-p RESOLUTION_PERCENTAGE] [-o OUTPUT_PATH] [-c CONFIG_PATH] SLIDE_DIR AUDIO_DIR BLEND_FILE
 
 指定されたスライドデータとオーディオデータからBlenderプロジェクトを作成する
 
@@ -48,6 +48,8 @@ options:
                         フレームレート(fps). デフォルト値: 60
   -p RESOLUTION_PERCENTAGE, --percentage RESOLUTION_PERCENTAGE
                         解像度のパーセンテージ. デフォルト値: 100
+  -o OUTPUT_PATH, --output-path OUTPUT_PATH
+                        レンダリング結果の出力先. デフォルト値: //{blend_name}.mp4
   -c CONFIG_PATH, --config CONFIG_PATH
                         設定ファイルのパス. デフォルト値: ~/.local/share/uv/tools/slide2video/lib/python3.10/site-packages/slide2video/etc/settings.json
 ```
@@ -100,7 +102,8 @@ slide2video -c 作成した設定ファイルのパス ...
     "resolution_x": 1920,
     "resolution_y": 1080,
     "resolution_percentage": 100,
-    "frame_rate": 60
+    "frame_rate": 60,
+    "output_path": "//{blend_name}.mp4"
   },
   "image": {
     "default_num_of_frames": 30
@@ -124,6 +127,7 @@ slide2video -c 作成した設定ファイルのパス ...
 |  render   |     resolution_y      | レンダリング結果の垂直解像度                                       | 1080         |
 |  render   | resolution_percentage | レンダリング解像度の割合(単位:%)                                   | 100          |
 |  render   |      frame_rate       | レンダリング結果のフレームレート(単位:fps)                         | 60           |
+|  render   |   output_path         | レンダリング結果の出力先                                    |//{blend_name}.mp4|
 |   image   | default_num_of_frames | スライドに対応する音声ファイルがない場合のスライドの表示フレーム数 | 30           |
 |   audio   |    margin_left_sec    | スライド表示してから音声ファイル再生までの待ち時間(単位:秒)        | 0.8          |
 |   audio   |   margin_right_sec    | 音声ファイル再生終了から次のスライド表示までの待ち時間(単位:秒)    | 1.0          |
@@ -131,6 +135,10 @@ slide2video -c 作成した設定ファイルのパス ...
 | extension |         audio         | 音声データファイルの拡張子                                         | wav          |
 
 ## 更新履歴
+
+### v0.2.2
+
+- 設定およびオプションで`output_path`を指定可能に
 
 ### v0.2.1
 
